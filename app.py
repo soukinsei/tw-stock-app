@@ -138,7 +138,22 @@ if query_btn or stock_code:
         p2.metric("目前總市值", f"NT$ {market_value:,.2f}")
         p3.metric("未實現損益", f"NT$ {gross_profit:+,.2f}", f"{return_rate:+.2f}%")
 
-    # 附帶繪製近半年股價走勢圖
+    # ==========================================
+    # 技術分析圖表繪製 (含 KD、RSI 走勢)
+    # ==========================================
     st.markdown("---")
-    st.markdown("### 📉 近半年收盤價走勢")
-    st.line_chart(df['Close'])
+    st.markdown("### 📉 技術指標線圖分析")
+    
+    tab1, tab2, tab3 = st.tabs(["📉 收盤價走勢", "📊 週 KD 指標 (K/D)", "📈 14 日 RSI 指標"])
+
+    with tab1:
+        st.caption("近半年每日收盤價走勢圖")
+        st.line_chart(df['Close'])
+
+    with tab2:
+        st.caption("週 K 線與 D 線雙線對比圖（藍線：K值，橘線：D值）")
+        st.line_chart(df_weekly[['K', 'D']])
+
+    with tab3:
+        st.caption("14 日 RSI 走勢圖（一般以 70 以上視為超買，30 以下視為超賣）")
+        st.line_chart(df['RSI'])
